@@ -6,8 +6,9 @@ from usecase.people_detector import PeopleDetector
 from usecase.general_detector import GeneralDetector
 from usecase.fire_detector import FireDetector
 from engine.detection_engine import DetectionEngine
+from usecase.road_dmg_detector import RoadDmgDetector
 
-cap = cv2.VideoCapture("assets/videos/family.mp4")
+cap = cv2.VideoCapture("assets/videos/road.mp4")
 frame_width, frame_height = (1280, 720)
 fps = cap.get(cv2.CAP_PROP_FPS)
 
@@ -16,7 +17,7 @@ recorder = VideoRecorder((frame_width, frame_height), fps, enable=False)
 capture = ImageCapture(enable=False)
 report = Report()
 
-detectors = [GeneralDetector(min_conf=0.5)]
+detectors = [RoadDmgDetector()]
 
 engine = DetectionEngine(
     detectors=detectors,
