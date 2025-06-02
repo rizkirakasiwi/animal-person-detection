@@ -1,0 +1,4 @@
+roboflow==1.1.64
+ultralytics==8.3.135
+cvzone==1.6.1
+opencv-python==4.11.0.86
