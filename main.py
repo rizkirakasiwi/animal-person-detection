@@ -13,7 +13,7 @@ frame_width, frame_height = (1280, 720)
 fps = cap.get(cv2.CAP_PROP_FPS)
 
 # Instantiate dependencies
-recorder = VideoRecorder((frame_width, frame_height), fps, enable=False)
+recorder = VideoRecorder((frame_width, frame_height), fps, enable=True)
 capture = ImageCapture(enable=False)
 report = Report()
 
