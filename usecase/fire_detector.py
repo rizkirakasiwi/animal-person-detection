@@ -8,29 +8,43 @@ import cvzone
 
 
 class FireDetector(Base):
-    def __init__(self):
-        self.fire_detector = ObjectDetector(
-            "model/reliable_model/fire3n.pt",
-            allowed_classes=[],  # You can specify if you want to limit detection classes
+    def __init__(self, min_conf: float = 0.25, show_label: bool = True):
+        allowed_classes = []  # Or specify class indices you want
+        self.detector = ObjectDetector(
+            "model/fire_v1.pt", allowed_classes=allowed_classes
         )
+        self.min_conf = min_conf
+        self.show_label = show_label
 
-    def detect(
-        self,
-        frame: np.ndarray,
-        min_conf: Optional[float] = None,
-        show_label: Optional[bool] = None,
-    ) -> List[Dict]:
-        min_conf = min_conf if min_conf is not None else 0.3
-        show_label = show_label if show_label is not None else True
-
+    def detect(self, frame: np.ndarray) -> List[Dict]:
         color = {
             "fire": (0, 0, 255),  # Red for fire
-            "smoke": (0, 0, 255),  # Red for smoke
+            "smoke": (128, 128, 128),  # Gray for smoke
         }
+        detections = self.detector.detect_plg(frame)
+        overlay = frame.copy()
 
-        detector = self.fire_detector.detect(frame)
-        for (x1, y1, x2, y2), cls_id, cls_name, _ in detector:
-            cv2.rectangle(frame, (x1, y1), (x2, y2), color[cls_name], 1)
-            person_label = "person" if cls_name == "human" else cls_name
-            cvzone.putTextRect(frame, to_camel_case(person_label), (max(20, x1), max(20, y1)), colorR=color[cls_name], scale=1, thickness=1)
-        return detector
+        for det in detections:
+            polygon = np.array([det["polygon"]], dtype=np.int32)  # ✅ wrap in list + convert to np array
+            cls_name = det["class_name"]
+            conf = det["confidence"]
+
+            if conf >= self.min_conf:
+                cv2.fillPoly(overlay, polygon, color[cls_name])
+                cv2.polylines(frame, polygon, isClosed=True, color=color[cls_name], thickness=1)
+
+                if self.show_label:
+                    x, y = det["polygon"][0]
+                    cvzone.putTextRect(
+                        frame,
+                        to_camel_case(cls_name),
+                        (max(20, x), max(20, y)),
+                        colorR=color[cls_name],
+                        scale=1,
+                        thickness=1,
+                    )
+
+        # 🧪 Blend the overlay (with shading) into the frame
+        cv2.addWeighted(overlay, 0.4, frame, 0.6, 0, frame)
+
+        return detections
