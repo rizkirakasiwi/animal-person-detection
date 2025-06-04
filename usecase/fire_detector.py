@@ -11,7 +11,7 @@ class FireDetector(Base):
     def __init__(self, min_conf: float = 0.25, show_label: bool = True):
         allowed_classes = []  # Or specify class indices you want
         self.detector = ObjectDetector(
-            "model/fire_v1.pt", allowed_classes=allowed_classes
+            "model/fire_v5.pt", allowed_classes=allowed_classes
         )
         self.min_conf = min_conf
         self.show_label = show_label
@@ -19,7 +19,7 @@ class FireDetector(Base):
     def detect(self, frame: np.ndarray) -> List[Dict]:
         color = {
             "fire": (0, 0, 255),  # Red for fire
-            "smoke": (128, 128, 128),  # Gray for smoke
+            "smoke": (255, 0, 0),  # Gray for smoke
         }
         detections = self.detector.detect_plg(frame)
         overlay = frame.copy()

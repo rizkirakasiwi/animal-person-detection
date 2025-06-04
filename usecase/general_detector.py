@@ -11,7 +11,7 @@ class GeneralDetector(Base):
     def __init__(self, min_conf: float = 0.25, show_label: bool = True):
         allowed_classes = []
         self.animal_detector = ObjectDetector(
-            "model/reliable_model/general_v1.pt", allowed_classes=allowed_classes
+            "model/reliable_model/general_v2.pt", allowed_classes=allowed_classes
         )
         self.min_conf = min_conf
         self.show_label = show_label

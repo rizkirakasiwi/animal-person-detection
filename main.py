@@ -13,11 +13,11 @@ frame_width, frame_height = (1280, 720)
 fps = cap.get(cv2.CAP_PROP_FPS)
 
 # Instantiate dependencies
-recorder = VideoRecorder((frame_width, frame_height), fps, enable=True)
+recorder = VideoRecorder((frame_width, frame_height), fps, enable=False)
 capture = ImageCapture(enable=False)
 report = Report()
 
-detectors = [FireDetector()]
+detectors = [GeneralDetector(), FireDetector()]
 
 engine = DetectionEngine(
     detectors=detectors,

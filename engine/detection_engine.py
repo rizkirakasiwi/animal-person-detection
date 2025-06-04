@@ -36,10 +36,20 @@ class DetectionEngine:
 
     def process_frame(self, frame: np.ndarray) -> np.ndarray:
         frame = cv2.resize(frame, (self.frame_width, self.frame_height))
+        base_frame = frame.copy()
 
-        has_detection = any(len(det.detect(frame)) > 0 for det in self.detectors)
+        all_detections = []
 
-        if has_detection:
+        for detector in self.detectors:
+            frame_copy = base_frame.copy()
+            detections = detector.detect(frame_copy)
+            if detections:
+                all_detections.extend(detections)
+                # Only apply changes where different (safely)
+                frame = np.where(frame_copy != base_frame, frame_copy, frame)
+
+        # Handle detection triggering
+        if all_detections:
             self.frame_buffer += 1
             if not self.recording and self.frame_buffer >= self.start_threshold:
                 img = self.capture.capture(frame)
@@ -53,7 +63,8 @@ class DetectionEngine:
                 self.recorder.stop()
                 self.recording = False
 
-        if self.show_timestamp:           
+        # Timestamp overlay
+        if self.show_timestamp:
             now = datetime.now()
             formatted = now.strftime("%d %m %Y %H:%M:%S")
             cvzone.putTextRect(frame, formatted, (50, 50), scale=1, thickness=2)
@@ -62,3 +73,5 @@ class DetectionEngine:
             self.recorder.write(frame)
 
         return frame
+
+
