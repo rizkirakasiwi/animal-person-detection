@@ -69,7 +69,12 @@ model/
 
 ## 🎬 Running the Project
 
-Use the CLI script to run detection on a video:
+Run the app using this command bellow:
+```bash
+streamlit run app.py
+```
+
+or Use the CLI script to run detection on a video:
 
 ```bash
 python run_detection.py --video assets/videos/wildfire.mp4 --usecase palm_security
