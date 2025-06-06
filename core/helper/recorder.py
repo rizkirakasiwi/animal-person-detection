@@ -36,7 +36,6 @@ class VideoRecorder:
             return
 
         if not self.writer:
-            os.makedirs(self.output_dir, exist_ok=True)
             self.path = get_output_path(path=self.output_dir, extension="mp4")
             self.writer = cv2.VideoWriter(self.path, self.fourcc, self.fps, self.frame_size)
 
