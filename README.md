@@ -55,14 +55,14 @@ pip3 install torch torchvision torchaudio --index-url https://download.pytorch.o
 
 4. **Download models**
 
-Place your YOLOv8 models in the `model/` directory.
+Place your YOLOv11 models in the `model/` directory.
 
 Example:
 
 ```
 model/
   ├── fire_v5.pt
-  └── yolov8n.pt
+  └── yolo11n.pt
 ```
 
 ---
