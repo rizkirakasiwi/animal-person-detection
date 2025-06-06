@@ -72,8 +72,13 @@ model/
 Use the CLI script to run detection on a video:
 
 ```bash
-python run_detection.py --video assets/videos/wildfire.mp4
+python run_detection.py --video assets/videos/wildfire.mp4 --usecase palm_security
 ```
+
+available usecase:
+1. palm_security
+2. ppe
+3. road_damage
 
 Press `q` to quit during playback.
 
