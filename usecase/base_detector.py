@@ -4,5 +4,5 @@ from typing import Optional
 
 class BaseDetector(ABC):
     @abstractmethod
-    def detect(self, frame: np.ndarray, min_conf: Optional[float], show_label: Optional[bool]) -> list:
+    def detect(self, frame: np.ndarray) -> list:
         pass
