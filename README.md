@@ -22,7 +22,7 @@ This project is a real-time video analysis tool built with OpenCV and YOLOv8. It
 
 * Python 3.9–3.11 (recommended)
 * `pip` or `poetry`
-* [YOLOv8 models](https://github.com/ultralytics/ultralytics)
+* [YOLOv11 models](https://github.com/ultralytics/ultralytics)
 
 ---
 
@@ -46,6 +46,11 @@ source .venv/bin/activate  # on Windows use `.venv\Scripts\activate`
 
 ```bash
 pip install -r requirements.txt
+```
+
+maybe you need to install cuda to run in GPU locally, please refer to this [link](https://pytorch.org/get-started/locally/) and download your cuda version for example
+```bash
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
 ```
 
 4. **Download models**
