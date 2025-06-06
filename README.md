@@ -77,7 +77,7 @@ streamlit run app.py
 or Use the CLI script to run detection on a video:
 
 ```bash
-python run_detection.py --video assets/videos/wildfire.mp4 --usecase palm_security
+python main.py --video assets/videos/wildfire.mp4 --usecase palm_security
 ```
 
 available usecase:
