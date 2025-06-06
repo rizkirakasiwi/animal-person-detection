@@ -12,7 +12,7 @@ from usecase.base_detector import BaseDetector as Base
 class FireDetector(Base):
     def __init__(self, min_conf: float = 0.25, show_label: bool = True):
         self.detector = ObjectDetector(
-            "model/fire_v5.pt", allowed_classes=[]
+            "model/reliable_model/fire_v6.pt", allowed_classes=[]
         )
         self.min_conf = min_conf
         self.show_label = show_label

@@ -13,8 +13,7 @@ def main(video_path: str):
         print(f"❌ Error: Cannot open video {video_path}")
         return
 
-    frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    frame_width, frame_height = (1280, 720)
     fps = cap.get(cv2.CAP_PROP_FPS) or 30
 
     # Instantiate dependencies
