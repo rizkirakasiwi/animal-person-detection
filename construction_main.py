@@ -1,9 +1,9 @@
 import cv2
-from helper.recorder import VideoRecorder
-from report.report import Report
-from helper.capture import ImageCapture
+from core.helper.recorder import VideoRecorder
+from core.report.report import Report
+from core.helper.capture import ImageCapture
 from usecase.ppe_detector import PPEDetector
-from engine.detection_engine import DetectionEngine
+from core.engine.detection_engine import DetectionEngine
 
 cap = cv2.VideoCapture("assets/videos/work.mp4")
 frame_width, frame_height = (1280, 720)

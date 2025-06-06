@@ -1,4 +1,11 @@
 roboflow==1.1.64
-ultralytics==8.3.135
+ultralytics~=8.3.139
 cvzone==1.6.1
 opencv-python==4.11.0.86
+
+numpy~=2.2.6
+requests~=2.32.3
+python-telegram-bot~=22.1
+python-dotenv~=1.1.0
+supabase~=2.15.2
+aiohttp~=3.12.9

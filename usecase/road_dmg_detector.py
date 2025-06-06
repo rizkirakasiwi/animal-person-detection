@@ -1,8 +1,8 @@
 import numpy as np
 from typing import List, Dict
-from helper.detector import ObjectDetector
+from core.helper.detector import ObjectDetector
 from usecase.base_detector import BaseDetector as Base
-from helper.extensions import to_camel_case
+from core.helper.extensions import to_camel_case
 import cv2
 import cvzone
 
