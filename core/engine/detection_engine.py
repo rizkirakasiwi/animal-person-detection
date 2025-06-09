@@ -9,6 +9,7 @@ from core.helper.recorder import VideoRecorder
 from core.helper.capture import ImageCapture
 from core.report.report import Report
 from core.helper.message import Message
+from datetime import datetime, timedelta
 
 
 class DetectionEngine:
@@ -30,6 +31,8 @@ class DetectionEngine:
         self.frame_width, self.frame_height = frame_size
         self.start_threshold = start_threshold
         self.show_timestamp = show_timestamp
+        self.recording_start_time: datetime | None = None
+        self.isCaptured = False
 
         self.frame_buffer = 0
         self.recording = False
@@ -43,7 +46,8 @@ class DetectionEngine:
         if all_detections:
             self._handle_trigger(base_frame, all_detections)
         else:
-            self._handle_no_detections(detections=all_detections)
+            self._stop_and_send_recorded_video(detections=all_detections)
+            self.isCaptured = False
 
         if self.show_timestamp:
             self._overlay_timestamp(frame)
@@ -51,6 +55,7 @@ class DetectionEngine:
         if self.recording:
             self.recorder.write(base_frame)
 
+        self._stop_recording_after_timeout(detections=all_detections)
         return frame
 
     def _run_detectors(self, base_frame: np.ndarray) -> List[dict]:
@@ -67,16 +72,33 @@ class DetectionEngine:
     def _handle_trigger(self, frame: np.ndarray, detections: List[dict]):
         self.frame_buffer += 1
 
-        if not self.recording and self.frame_buffer >= self.start_threshold:
-            def on_image_saved(image_path):
-                caption = Message.generate_message(detections)
-                self.report.send_notif(message=caption, image=image_path)
+        if self.frame_buffer >= self.start_threshold:
+            self._capture_and_send_image(frame, detections)
+            self._start_recording()
 
-            self.capture.capture(frame.copy(), callback=on_image_saved)
+    def _start_recording(self):
+        if not self.recording:
             self.recorder.start()
             self.recording = True
+            self.recording_start_time = datetime.now()
 
-    def _handle_no_detections(self, detections: List[dict]):
+    def _capture_and_send_image(self, frame: np.ndarray, detections: List[dict]):
+         if not self.isCaptured:
+                def on_image_saved(image_path):
+                    caption = Message.generate_message(detections)
+                    self.report.send_notif(message=caption, image=image_path)
+
+                self.capture.capture(frame.copy(), callback=on_image_saved)
+                self.isCaptured = True
+
+    def _stop_recording_after_timeout(self, detections: List[dict], timeout_in_millis: int = 3000):
+        if self.recording and self.recording_start_time:
+            elapsed = datetime.now() - self.recording_start_time
+            if elapsed >= timedelta(milliseconds=timeout_in_millis):
+                self._stop_and_send_recorded_video(detections)
+                self.recording_start_time = None
+
+    def _stop_and_send_recorded_video(self, detections: List[dict]):
         self.frame_buffer = 0
         if self.recording:
             path = self.recorder.stop()
