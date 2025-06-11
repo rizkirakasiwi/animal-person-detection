@@ -9,10 +9,9 @@ from usecase.road_dmg_detector import RoadDmgDetector
 import cv2
 
 
-def run_detection(video_path: str, use_case: str = "palm_security"):
-    cap = cv2.VideoCapture(video_path)
+def run_detection(cap: cv2.VideoCapture, use_case: str = "palm_security"):
     if not cap.isOpened():
-        print(f"❌ Error: Cannot open video {video_path}")
+        print(f"❌ Error: Cannot open video ")
         return
 
     frame_width, frame_height = (1280, 720)
