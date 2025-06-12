@@ -15,7 +15,7 @@ class RoadDmgDetector(Base):
         self.min_conf = min_conf
         self.show_label = show_label
 
-    def detect(self, frame: np.ndarray) -> List[Dict]:
+    def detect(self, frame: np.ndarray) -> List[Dict]: 
         color = (0, 0, 255)
         detections = self.detector.detect_plg(frame)
         overlay = frame.copy()
