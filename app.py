@@ -12,7 +12,7 @@ torch.classes.__path__ = []
 def __main():
     st.title("🚨 Object Detection Interface")
 
-    use_case = st.selectbox("Select Use Case", ["palm_security", "ppe", "road_damage"])
+    use_case = st.selectbox("Select Use Case", ["palm_security", "ppe", "road_damage", "bird_drop"])
     input_source = st.radio(
         "Select Input Source",
         ["Camera (by Device ID)", "Upload Video", "Streaming Link"]
