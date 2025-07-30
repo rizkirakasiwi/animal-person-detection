@@ -13,7 +13,7 @@ from usecase.base_detector import BaseDetector as Base
 class BirdPooSegmentation(Base):
     def __init__(self, min_conf: float = 0.25, show_label: bool = True):
         self.detector = ObjectDetector(
-            "model/reliable_model/poo_seg_weight.pt", allowed_classes=["bird-poo"]
+            "model/reliable_model/poo_seg_weight.pt", allowed_classes=[]
         )
         self.min_conf = min_conf
         self.show_label = show_label
