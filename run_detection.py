@@ -1,3 +1,5 @@
+import cv2
+
 from core.engine.detection_engine import DetectionEngine
 from core.helper.capture import ImageCapture
 from core.helper.recorder import VideoRecorder
@@ -7,7 +9,6 @@ from usecase.fire_detector import FireDetector
 from usecase.general_detector import GeneralDetector
 from usecase.ppe_detector import PPEDetector
 from usecase.road_dmg_detector import RoadDmgDetector
-import cv2
 
 
 def run_detection(cap: cv2.VideoCapture, use_case: str = "palm_security"):

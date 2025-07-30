@@ -1,4 +1,5 @@
 import argparse
+
 import cv2
 
 from run_detection import run_detection
@@ -9,13 +10,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--usecase",
         required=True,
-        choices=["palm_security", "ppe", "road_damage"],
-        help="Choose usecase: palm_security, ppe, or road_damage",
+        choices=["palm_security", "ppe", "road_damage", "bird_drop"],
+        help="Choose usecase: palm_security, ppe,road_damage or bird_drop",
     )
     args = parser.parse_args()
     if args.video == "0":
         args.video = 0
-        
+
     cap = cv2.VideoCapture(args.video)
 
     run_detection(cap, args.usecase)

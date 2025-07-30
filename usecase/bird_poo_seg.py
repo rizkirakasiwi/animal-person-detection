@@ -1,5 +1,5 @@
 
-from typing import List, Dict
+from typing import Dict, List
 
 import cv2
 import cvzone
@@ -13,7 +13,7 @@ from usecase.base_detector import BaseDetector as Base
 class BirdPooSegmentation(Base):
     def __init__(self, min_conf: float = 0.25, show_label: bool = True):
         self.detector = ObjectDetector(
-            "model/reliable_model/poo_seg_weight.pt", allowed_classes=["bird drop"]
+            "model/reliable_model/poo_seg_weight.pt", allowed_classes=["bird-poo"]
         )
         self.min_conf = min_conf
         self.show_label = show_label
@@ -37,11 +37,11 @@ class BirdPooSegmentation(Base):
 
             cls_name = det["class_name"]
             polygon = np.array([det["polygon"]], dtype=np.int32)
-            color = self.color_map.get(cls_name, (0, 255, 0))  # fallback to green
+            color = self.color_map.get(cls_name, (0, 255, 0))
 
             # Fill and outline
-            cv2.fillPoly(overlay, polygon, color)
-            cv2.polylines(frame, polygon, isClosed=True, color=color, thickness=1)
+            cv2.fillPoly(overlay, polygon, color) #type: ignore
+            cv2.polylines(frame, polygon, isClosed=True, color=color, thickness=1) #type: ignore
 
             # Optional label
             if self.show_label:

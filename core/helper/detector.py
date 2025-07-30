@@ -8,7 +8,7 @@ class ObjectDetector:
         self.stream = stream
 
     def detect(self, frame):
-        results = self.model(frame, stream=self.stream, device=-1)
+        results = self.model(frame, stream=self.stream, device=0)
         if not results:
             return []
 
@@ -18,7 +18,7 @@ class ObjectDetector:
         for result in results:
             for box in result.boxes:
                 cls_id = int(box.cls[0])
-                if self.allowed_classes and cls_id not in self.allowed_classes:
+                if self.allowed_classes and class_names[cls_id] not in self.allowed_classes:
                     continue
 
                 conf = float(box.conf[0])
@@ -35,7 +35,7 @@ class ObjectDetector:
 
 
     def detect_plg(self, frame):
-        results = self.model(frame, stream=self.stream, device=-1)
+        results = self.model(frame, stream=self.stream, device=0)
         if not results:
             return []
 
@@ -47,7 +47,7 @@ class ObjectDetector:
             if result.masks is not None:
                 for seg, cls_id, conf in zip(result.masks.xy, result.boxes.cls, result.boxes.conf):
                     cls_id = int(cls_id)
-                    if len(self.allowed_classes) > 0 and cls_id not in self.allowed_classes:
+                    if len(self.allowed_classes) > 0 and class_names[cls_id] not in self.allowed_classes:
                         continue
 
                     polygon = [(int(x), int(y)) for x, y in seg]
@@ -63,7 +63,7 @@ class ObjectDetector:
                 # Fallback for models without masks (returns rectangle polygon)
                 for box in result.boxes:
                     cls_id = int(box.cls[0])
-                    if len(self.allowed_classes) > 0 and cls_id not in self.allowed_classes:
+                    if len(self.allowed_classes) > 0 and class_names[cls_id] not in self.allowed_classes:
                         continue
 
                     conf = float(box.conf[0])
