@@ -4,6 +4,7 @@ from core.engine.detection_engine import DetectionEngine
 from core.helper.capture import ImageCapture
 from core.helper.recorder import VideoRecorder
 from core.report.report import Report
+from usecase.bird_drop_usecase import BirdDropDetector
 from usecase.fire_detector import FireDetector
 from usecase.general_detector import GeneralDetector
 from usecase.ppe_detector import PPEDetector
@@ -25,6 +26,7 @@ def run_detection(cap: cv2.VideoCapture, use_case: str = "palm_security"):
 
     use_case_map = {
         "palm_security": [GeneralDetector(), FireDetector()],
+        "bird_drop": [BirdDropDetector()],
         "ppe": [PPEDetector()],
         "road_damage": [RoadDmgDetector()],
     }
@@ -53,7 +55,7 @@ def run_detection(cap: cv2.VideoCapture, use_case: str = "palm_security"):
         processed_frame = engine.process_frame(frame)
         cv2.imshow("Detection", processed_frame)
 
-        if cv2.waitKey(1) & 0xFF == ord("q"):
+        if cv2.waitKey(10) & 0xFF == ord("q"):
             break
 
     cap.release()
