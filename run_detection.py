@@ -6,6 +6,7 @@ from core.helper.recorder import VideoRecorder
 from core.report.report import Report
 from usecase.bird_drop_usecase import BirdDropDetector
 from usecase.fire_detector import FireDetector
+from usecase.bad_parking import BadParkingDetector
 from usecase.general_detector import GeneralDetector
 from usecase.ppe_detector import PPEDetector
 from usecase.road_dmg_detector import RoadDmgDetector
@@ -26,6 +27,7 @@ def run_detection(cap: cv2.VideoCapture, use_case: str = "palm_security"):
 
     use_case_map = {
         "palm_security": [GeneralDetector(), FireDetector()],
+        "bad_parking": [BadParkingDetector()],
         "bird_drop": [BirdDropDetector()],
         "ppe": [PPEDetector()],
         "road_damage": [RoadDmgDetector()],

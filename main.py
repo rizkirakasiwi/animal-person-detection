@@ -10,7 +10,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--usecase",
         required=True,
-        choices=["palm_security", "ppe", "road_damage", "bird_drop"],
+        choices=["palm_security", "ppe", "road_damage", "bird_drop", "bad_parking"],
         help="Choose usecase: palm_security, ppe,road_damage or bird_drop",
     )
     args = parser.parse_args()
