@@ -10,7 +10,7 @@ from usecase.base_detector import BaseDetector as Base
 
 
 class BadParkingDetector(Base):
-    def __init__(self, min_conf: float = 0.25, show_label: bool = True, frame_size: tuple = (640, 480)):
+    def __init__(self, min_conf: float = 0.25, show_label: bool = False, frame_size: tuple = (640, 480)):
         self.detector = ObjectDetector(
             "model/bp-yl11-v3.pt", allowed_classes=[]
         )
@@ -84,13 +84,15 @@ class BadParkingDetector(Base):
             # Determine color based on class and violation status
             if cls_name == "car":
                 car_index = next((i for i, car in enumerate(cars) if car == det), -1)
-                color = (0, 0, 255) if car_index in violating_cars else (255, 0, 0)  # Red if violating, blue if not
-            else:  # lines
-                color = (0, 255, 0)  # Green for lines
+                if car_index in violating_cars:
+                    color = (0, 0, 255)
+                    cv2.fillPoly(overlay, polygon, color) # type: ignore
+                    cv2.polylines(frame, polygon, isClosed=True, color=color, thickness=1) # type: ignore
+            else:
+                color = (0, 255, 0)
+                cv2.fillPoly(overlay, polygon, color) # type: ignore
+                cv2.polylines(frame, polygon, isClosed=True, color=color, thickness=1) # type: ignore
 
-            # Fill and outline
-            cv2.fillPoly(overlay, polygon, color) # type: ignore
-            cv2.polylines(frame, polygon, isClosed=True, color=color, thickness=1) # type: ignore
 
             # Optional label
             if self.show_label:
@@ -99,7 +101,7 @@ class BadParkingDetector(Base):
                     frame,
                     to_camel_case(cls_name),
                     (max(20, x), max(20, y)),
-                    colorR=color,
+                    colorR=(0, 255, 0),
                     scale=1,
                     thickness=1,
                 )

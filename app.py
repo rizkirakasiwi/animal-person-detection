@@ -1,8 +1,8 @@
 import tempfile
 
+import cv2
 import streamlit as st
 import torch
-import cv2
 
 from run_detection import run_detection
 
@@ -12,7 +12,7 @@ torch.classes.__path__ = []
 def __main():
     st.title("🚨 Object Detection Interface")
 
-    use_case = st.selectbox("Select Use Case", ["palm_security", "ppe", "road_damage", "bird_drop"])
+    use_case = st.selectbox("Select Use Case", ["palm_security", "ppe", "road_damage", "bird_drop", "bad_parking"])
     input_source = st.radio(
         "Select Input Source",
         ["Camera (by Device ID)", "Upload Video", "Streaming Link"]

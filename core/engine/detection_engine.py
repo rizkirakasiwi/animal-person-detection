@@ -1,15 +1,15 @@
-import cv2
-import numpy as np
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List
 
+import cv2
 import cvzone
-from usecase.base_detector import BaseDetector
-from core.helper.recorder import VideoRecorder
+import numpy as np
+
 from core.helper.capture import ImageCapture
-from core.report.report import Report
 from core.helper.message import Message
-from datetime import datetime, timedelta
+from core.helper.recorder import VideoRecorder
+from core.report.report import Report
+from usecase.base_detector import BaseDetector
 
 
 class DetectionEngine:
@@ -44,7 +44,7 @@ class DetectionEngine:
         all_detections = self._run_detectors(frame)
 
         if all_detections:
-            self._handle_trigger(base_frame, all_detections)
+            self._handle_trigger(frame, all_detections)
         else:
             self._stop_and_send_recorded_video(detections=all_detections)
             self.isCaptured = False
@@ -53,7 +53,7 @@ class DetectionEngine:
             self._overlay_timestamp(frame)
 
         if self.recording:
-            self.recorder.write(base_frame)
+            self.recorder.write(frame)
 
         self._stop_recording_after_timeout(detections=all_detections)
         return frame
@@ -103,7 +103,7 @@ class DetectionEngine:
         if self.recording:
             path = self.recorder.stop()
             caption = Message.generate_message(detections)
-            self.report.send_video_async(video=path, message=caption)
+            self.report.send_video_async(video=path, message=caption) # type: ignore
             self.recording = False
 
     def _overlay_timestamp(self, frame: np.ndarray):
